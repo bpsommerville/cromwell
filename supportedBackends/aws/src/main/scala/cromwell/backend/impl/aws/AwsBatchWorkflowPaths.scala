@@ -31,7 +31,7 @@
 
 package cromwell.backend.impl.aws
 
-import software.amazon.awssdk.auth.credentials.AwsCredentials
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider
 import akka.actor.ActorSystem
 import com.typesafe.config.Config
 import cromwell.backend.io.WorkflowPaths
@@ -45,7 +45,7 @@ object AwsBatchWorkflowPaths {
 }
 
 case class AwsBatchWorkflowPaths(workflowDescriptor: BackendWorkflowDescriptor,
-                            credentials: AwsCredentials,
+                                 credentialsProvider: AwsCredentialsProvider,
                             configuration: AwsBatchConfiguration)(implicit actorSystem: ActorSystem) extends WorkflowPaths {
 
   override lazy val executionRootString: String =  configuration.fileSystem match {
@@ -63,7 +63,7 @@ case class AwsBatchWorkflowPaths(workflowDescriptor: BackendWorkflowDescriptor,
   override def config: Config = configuration.configurationDescriptor.backendConfig
   override def pathBuilders: List[PathBuilder] = {
     if (configuration.fileSystem == "s3") {
-      List(configuration.pathBuilderFactory.asInstanceOf[S3PathBuilderFactory].fromCredentials(workflowOptions, credentials))
+      List(configuration.pathBuilderFactory.asInstanceOf[S3PathBuilderFactory].fromCredentials(workflowOptions, credentialsProvider))
     } else {
       WorkflowPaths.DefaultPathBuilders}
   }

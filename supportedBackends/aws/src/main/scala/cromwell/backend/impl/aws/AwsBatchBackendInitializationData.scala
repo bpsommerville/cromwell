@@ -31,7 +31,7 @@
 
 package cromwell.backend.impl.aws
 
-import software.amazon.awssdk.auth.credentials.AwsCredentials
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider
 import cromwell.backend.standard.{StandardInitializationData, StandardValidatedRuntimeAttributesBuilder}
 
 case class AwsBatchBackendInitializationData
@@ -39,7 +39,7 @@ case class AwsBatchBackendInitializationData
   override val workflowPaths: AwsBatchWorkflowPaths,
   override val runtimeAttributesBuilder: StandardValidatedRuntimeAttributesBuilder,
   configuration: AwsBatchConfiguration,
-  credentials: AwsCredentials,
+  credentialsProvider: AwsCredentialsProvider,
   // TODO: We'll need something specific for batch probably, but I need to
   //       understand more about the genomics node first
   //genomics: Genomics
